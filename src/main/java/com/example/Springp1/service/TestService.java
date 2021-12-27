@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,20 +29,38 @@ public class TestService {
     {
         List<Dealer> deal = dealerRepo.findAll();
         List<DealerDetailsModel> detailModel = new ArrayList<>();
-        deal.stream().forEach(k->{
-            DealerDetailsModel dm = new DealerDetailsModel();
-            dm.setId(k.getId());
-            dm.setName(k.getName());
-            dm.setEmail(k.getEmail());
-            detailModel.add(dm);
-        });
-        return detailModel;
+
+        return deal.stream().map(i -> conversion(i)).collect(Collectors.toList());
+
+    }
+    public DealerDetailsModel getById(int id)
+    {
+        Optional<Dealer> ddd= dealerRepo.findById(id);
+        if(ddd.isPresent()){
+            return conversion(ddd.get());
+
+        }
+        return null;
     }
 
 
 
+    public DealerDetailsModel conversion(Dealer detail)
+    {
+        DealerDetailsModel data = new DealerDetailsModel();
+        data.setId(detail.getId());
+        data.setName(detail.getName());
+        data.setEmail(detail.getEmail());
+        return data;
+    }
 
 
+    public void delete() {
+        dealerRepo.deleteAll();
+    }
 
+    public void deleteby(int id) {
+        dealerRepo.deleteById(id);
+    }
 
 }

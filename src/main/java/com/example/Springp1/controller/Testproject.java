@@ -5,10 +5,7 @@ import com.example.Springp1.model.DealerDetailsModel;
 import com.example.Springp1.model.TestModel;
 import com.example.Springp1.service.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,21 +20,40 @@ public class Testproject {
       return service.addData(detailsModel);
    }
    @GetMapping("/get")
-   public List<DealerDetailsModel> getd()
+   public List<DealerDetailsModel> get()
    {
       return service.get();
 
    }
-
-   @PostMapping("/post-message")
-   private TestModel GetMessage(@RequestBody TestModel message){
-       return message;
-   }
-   @GetMapping("/get-message")
-   public String hetMessage()
+   @GetMapping("/get/{id}")
+   public DealerDetailsModel getById(@PathVariable int id)
    {
-      return "Hello........";
+      return service.getById(id);
    }
+
+   @DeleteMapping("/deleteall")
+   public void delete()
+   {
+      service.delete();
+   }
+   @DeleteMapping("/delet-by-id/{id}")
+   public void delet(@PathVariable int id)
+   {
+      service.deleteby(id);
+   }
+
+
+
+
+//   @PostMapping("/post-message")
+//   private TestModel GetMessage(@RequestBody TestModel message){
+//       return message;
+//   }
+//   @GetMapping("/get-message")
+//   public String hetMessage()
+//   {
+//      return "Hello........";
+//   }
 
 
 }
