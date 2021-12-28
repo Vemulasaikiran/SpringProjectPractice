@@ -14,11 +14,11 @@ public class Testproject {
    @Autowired
    private TestService service;
 
-   @PostMapping("/add")
-   public Dealer addData(@RequestBody DealerDetailsModel detailsModel)
-   {
-      return service.addData(detailsModel);
-   }
+//   @PostMapping("/add")
+//   public Dealer addData(@RequestBody DealerDetailsModel detailsModel)
+//   {
+//      return service.addData(detailsModel);
+//   }
    @GetMapping("/get")
    public List<DealerDetailsModel> get()
    {
@@ -36,14 +36,28 @@ public class Testproject {
    {
       service.delete();
    }
-   @DeleteMapping("/delet-by-id/{id}")
-   public void delet(@PathVariable int id)
+
+
+   @DeleteMapping("/delete-by-id/{id}")
+   public void delete(@PathVariable int id)
    {
       service.deleteby(id);
    }
 
 
+   @RequestMapping (value = "/add-emp")
+public void addData(@RequestParam int id,
+                    @RequestParam String name,
+                    @RequestParam String email)
+   {
+         service.addData(id,name,email);
+   }
 
+//   @PutMapping("/update/{id}")
+//   public DealerDetailsModel replace(@PathVariable int id, @RequestBody DealerDetailsModel detailsModel)
+//   {
+//      return service.replace(id,detailsModel);
+//   }
 
 //   @PostMapping("/post-message")
 //   private TestModel GetMessage(@RequestBody TestModel message){

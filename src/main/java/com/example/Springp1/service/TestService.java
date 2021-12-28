@@ -6,7 +6,7 @@ import com.example.Springp1.repository.DealerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -15,32 +15,32 @@ import java.util.stream.Collectors;
 public class TestService {
 
     @Autowired
-    private DealerRepo dealerRepo;
+    private final DealerRepo dealerRepo;
 
-    public Dealer addData(DealerDetailsModel dealerModel){
+    public TestService(DealerRepo dealerRepo) {
+        this.dealerRepo = dealerRepo;
+    }
+
+    public Dealer addData(int id, String name, String email){
         Dealer dealer =new Dealer();
-        dealer.setId(dealerModel.getId());
-        dealer.setName(dealerModel.getName());
-        dealer.setEmail(dealerModel.getEmail());
+        dealer.setId(id);
+        dealer.setName(name);
+        dealer.setEmail(email);
         return dealerRepo.save(dealer);
     }
 
     public List<DealerDetailsModel> get()
     {
         List<Dealer> deal = dealerRepo.findAll();
-        List<DealerDetailsModel> detailModel = new ArrayList<>();
+//        List<DealerDetailsModel> detailModel = new ArrayList<>();
 
-        return deal.stream().map(i -> conversion(i)).collect(Collectors.toList());
+        return deal.stream().map(this::conversion).collect(Collectors.toList());
 
     }
     public DealerDetailsModel getById(int id)
     {
         Optional<Dealer> ddd= dealerRepo.findById(id);
-        if(ddd.isPresent()){
-            return conversion(ddd.get());
-
-        }
-        return null;
+        return ddd.map(this::conversion).orElse(null);
     }
 
 
@@ -55,12 +55,18 @@ public class TestService {
     }
 
 
-    public void delete() {
+    public void delete()
+    {
+
         dealerRepo.deleteAll();
     }
 
-    public void deleteby(int id) {
+    public void deleteby(int id)
+    {
+
         dealerRepo.deleteById(id);
     }
+
+
 
 }
